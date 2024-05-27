@@ -15,6 +15,7 @@ class MainStore with ChangeNotifier {
 
   FetchModel<NsModel> nsSubject = FetchModel<NsModel>();
   FetchModel<NodeModel> nodeSubject = FetchModel<NodeModel>();
+
   MainStore() {
     init();
   }
@@ -31,8 +32,8 @@ class MainStore with ChangeNotifier {
   }
 
   void setSelectedNs(BuildContext context, List<String> list) {
-    PodStore podStore = Provider.of<PodStore>(context);
-    PvcStore pvcStore = Provider.of<PvcStore>(context);
+    PodStore podStore = Provider.of<PodStore>(context, listen: false);
+    PvcStore pvcStore = Provider.of<PvcStore>(context, listen: false);
 
     _selectedNs = list;
     if (_selectedNs.isNotEmpty) {

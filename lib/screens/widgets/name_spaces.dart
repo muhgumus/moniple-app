@@ -19,10 +19,13 @@ class Namespaces extends StatelessWidget {
     List<String> list = store.getSelectedNs();
     if (store.getSelectedNs().contains(ns)) {
       list.remove(ns);
+      store.notifyListeners();
     } else {
       list.add(ns);
+      store.notifyListeners();
     }
     store.setSelectedNs(context, list);
+    store.notifyListeners();
   }
 
   @override
