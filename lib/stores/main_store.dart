@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:monipleapp/models/cluster_model.dart';
 import 'package:monipleapp/models/ns_model.dart';
 import 'package:monipleapp/stores/config_store.dart';
 import 'package:monipleapp/stores/pod_store.dart';
@@ -15,6 +18,7 @@ class MainStore with ChangeNotifier {
 
   FetchModel<NsModel> nsSubject = FetchModel<NsModel>();
   FetchModel<NodeModel> nodeSubject = FetchModel<NodeModel>();
+  FetchModel<ClusterModel> clusterSubject = FetchModel<ClusterModel>();
 
   MainStore() {
     init();
@@ -55,8 +59,75 @@ class MainStore with ChangeNotifier {
     return _selectedNs;
   }
 
+  Future<FetchModel<ClusterModel>> getCluster() async {
+    try {
+      clusterSubject.loading = true;
+      notifyListeners();
+      clusterSubject.success = false;
+      clusterSubject.error = "";
+      await dio
+          .get("${ConfigStore().apiUrl}/ns",
+              options: Options(headers: {
+                "Content-Type": "application/json",
+                ConfigStore().clientIdKey: ConfigStore().clientId,
+                ConfigStore().clientSecretKey: ConfigStore().clientSecret,
+                "Authorization": "Bearer ${ConfigStore().getAccessToken()}"
+              }))
+          .then((response) {
+        if (response.statusCode == 200) {
+          clusterSubject.success = true;
+          var clusters = <Cluster>[];
+
+          clusters.add(Cluster(
+              name: "Fimple Dev",
+              address: "https://moniple-agent.dev.fimple.co.uk",
+              color: "#D68910"));
+          clusters.add(Cluster(
+              name: "Fimple Test",
+              address: "https://moniple-agent.test.fimple.co.uk",
+              color: "#1E8449"));
+          clusters.add(Cluster(
+              name: "Fimple Sandbox",
+              address: "https://moniple-agent.sandbox.fimple.co.uk",
+              color: "#2E86C1"));
+          clusters.add(Cluster(
+              name: "Moniple Prod",
+              address: "https://agent-test.moniple.com",
+              color: "#7D3C98"));
+
+          clusterSubject.data = ClusterModel(data: clusters, key: "cluster");
+        } else {
+          clusterSubject.error = response.data['tppMessages'][0].text;
+        }
+      }).catchError((error) {
+        debugPrint(error.toString());
+        /*if (error.response.statusCode == 401) {
+         AuthStore().logout();
+        } else {
+          */
+        clusterSubject.error = ConfigStore().generalError;
+        /*
+        var errorMessage = error.message;
+        if (error.response.data['tppMessages'][0]["text"] != null)
+          errorMessage = error.response.data['tppMessages'][0]["text"];
+        clusterSubject.error = errorMessage;
+         */
+        //}
+      });
+    } catch (e) {
+      clusterSubject.error = ConfigStore().generalError;
+      debugPrint(e.toString());
+    } finally {
+      clusterSubject.loading = false;
+      notifyListeners();
+    }
+    if (!clusterSubject.success) throw (clusterSubject.error);
+    return clusterSubject;
+  }
+
   Future<FetchModel<NsModel>> getNs() async {
     try {
+      log(ConfigStore().apiUrl);
       nsSubject.loading = true;
       notifyListeners();
       nsSubject.success = false;

@@ -30,7 +30,7 @@ class NsViewState extends State<NsView> {
     super.initState();
 
     Future.microtask(() =>
-        Provider.of<MainStore>(context, listen: false).getNs().whenComplete(() {
+        Provider.of<MainStore>(context, listen: true).getNs().whenComplete(() {
           if (mainStore.nsSubject.success) {}
           // ignore: body_might_complete_normally_catch_error
         }).catchError((error) {

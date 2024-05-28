@@ -1,4 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:monipleapp/stores/main_store.dart';
+import 'package:monipleapp/stores/pod_store.dart';
 
 class ConfigStore with ChangeNotifier {
   static final ConfigStore _singleton = ConfigStore._internal();
@@ -23,13 +27,19 @@ class ConfigStore with ChangeNotifier {
   ConfigStore._internal() {
     identityUrl = "";
     apiUrl =
-        "https://agent-test.moniple.com/metrics"; //  "http://localhost:3000/metrics"; //
+        "https://moniple-agent.test.fimple.co.uk/metrics"; //"https://agent-test.moniple.com/metrics"; //  "http://localhost:3000/metrics"; //
     loginUrl = "$identityUrl/connect/apptoapp";
   }
 
   setAccessToken(String token) {
     debugPrint(token);
     accessToken = token;
+  }
+
+  setApiUrl(String url) {
+    log(url);
+    apiUrl = "$url/metrics";
+    notifyListeners();
   }
 
   clearAccessToken() {
