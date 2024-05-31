@@ -5,18 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "moniple-app",
+            "name": "moniple_app",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "moniple-app (profile mode)",
+            "name": "moniple_app (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "moniple-app (release mode)",
+            "name": "moniple_app (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"
