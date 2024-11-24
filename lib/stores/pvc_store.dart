@@ -21,7 +21,7 @@ class PvcStore with ChangeNotifier {
 
   init() async {
     dio.interceptors.add(PrettyDioLogger(
-        requestHeader: true,
+        requestHeader: false,
         requestBody: true,
         responseBody: true,
         responseHeader: false,
@@ -112,6 +112,9 @@ class PvcStore with ChangeNotifier {
       notifyListeners();
       subject.success = false;
       subject.error = "";
+      dio.options.connectTimeout =
+          Duration(seconds: 30); // Bağlantı süresini artırın.
+      dio.options.receiveTimeout = Duration(seconds: 30);
       await dio
           .get("${ConfigStore().apiUrl}/pvc",
               options: Options(headers: {
@@ -121,6 +124,7 @@ class PvcStore with ChangeNotifier {
                 "Authorization": "Bearer ${ConfigStore().getAccessToken()}"
               }))
           .then((response) {
+        var a = response;
         if (response.statusCode == 200) {
           subject.success = true;
           subject.data = PvcModel.fromJson(response.data);

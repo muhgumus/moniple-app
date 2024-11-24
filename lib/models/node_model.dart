@@ -27,7 +27,7 @@ class NodeModel {
       data['summary'] = summary!.toJson();
     }
     data['data'] = this.data!.map((v) => v.toJson()).toList();
-      return data;
+    return data;
   }
 }
 
