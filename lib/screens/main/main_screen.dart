@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:monipleapp/screens/dashboard/components/node_infos.dart';
+import 'package:monipleapp/screens/dashboard/dashboard_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'package:monipleapp/controllers/menu_app_controller.dart';
@@ -28,7 +28,7 @@ class MainScreen extends StatelessWidget {
             const Expanded(
               // It takes 5/6 part of the screen
               flex: 5,
-              child: NodeInfos(),
+              child: DashboardScreen(),
             ),
           ],
         ),

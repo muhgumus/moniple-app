@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Admin Panel',
+      title: 'Moniple',
       theme: ThemeData.dark().copyWith(
         cardColor: Colors.amber,
         dividerColor: Colors.red,
